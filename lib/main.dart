@@ -6,7 +6,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,35 +20,58 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+  final List<Transaction> transactions = [
+    Transaction(
+        id: 't1', title: 'New Shoes', amount: 69.99, date: DateTime.now()),
+    Transaction(
+        id: 't2',
+        title: 'Weekly Groceries',
+        amount: 16.53,
+        date: DateTime.now()),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold (
-      appBar: AppBar(
-        title: Text('Flutter App'),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Container(
-            child: Card(
-              color: Colors.blue,
-              child: Container(
-                child: Text('Chart!'),
-                width: double.infinity,
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Flutter App'),
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Container(
+              child: Card(
+                color: Colors.blue,
+                child: Container(
+                  child: Text('Chart!'),
+                  width: double.infinity,
+                ),
+                elevation: 5,
               ),
-              elevation: 5,
             ),
-          ),
-          Column(
-            children: transactions.map((transaction) => Card(
-              child: Text(transaction.title),
-            )).toList(),
-          ),
-        ],
-      )
-    );
+            Column(
+              children: transactions
+                  .map((transaction) => Card(
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              child: Text(
+                                transaction.amount.toString(),
+                              ),
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Text(transaction.title),
+                                Text(transaction.date.toString()),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ))
+                  .toList(),
+            ),
+          ],
+        ));
   }
-
 }
