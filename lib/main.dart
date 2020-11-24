@@ -1,5 +1,7 @@
 import 'package:expense_planner/transaction.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(MyApp());
@@ -37,7 +39,7 @@ class MyHomePage extends StatelessWidget {
           title: Text('Flutter App'),
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          // mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
@@ -56,14 +58,44 @@ class MyHomePage extends StatelessWidget {
                         child: Row(
                           children: <Widget>[
                             Container(
+                              margin: EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 15,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.deepPurple,
+                                  width: 2,
+                                ),
+                              ),
+                              padding: EdgeInsets.all(10),
                               child: Text(
-                                transaction.amount.toString(),
+                                '\$ ${transaction.amount}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.deepPurple,
+                                ),
                               ),
                             ),
                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(transaction.title),
-                                Text(transaction.date.toString()),
+                                Text(
+                                  transaction.title,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                Text(
+                                    DateFormat('d.MM.y').format(transaction.date),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                    color: Colors.grey,
+                                  ),
+                                ),
                               ],
                             ),
                           ],
