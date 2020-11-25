@@ -13,9 +13,27 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Expense Planner',
       theme: ThemeData(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        primarySwatch: Colors.cyan,
+        accentColor: Colors.grey,
+        fontFamily: 'Quicksand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+          headline6: TextStyle(
+            fontFamily: 'OpenSans',
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+            headline6: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
       home: MyHomePage(),
     );
@@ -71,7 +89,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter App'),
+        title: Text(
+            'Expense Planner'
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
