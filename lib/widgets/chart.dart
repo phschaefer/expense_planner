@@ -42,7 +42,10 @@ class Chart extends StatelessWidget {
       child: Row(
         children: groupTransactionsValues
             .map(
-              (data) => Bar(data['day'], data['amount'], (data['amount'] as double) / maxSpending),
+              (data) => Bar(
+                  data['day'],
+                  data['amount'],
+                  maxSpending == 0.0 ? 0.0: (data['amount'] as double) / maxSpending),
       ).toList(),
       ),
     );
