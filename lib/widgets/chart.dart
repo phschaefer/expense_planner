@@ -1,5 +1,6 @@
 import 'package:expense_planner/models/transaction.dart';
 import 'package:expense_planner/widgets/bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -39,14 +40,21 @@ class Chart extends StatelessWidget {
     return Card(
       elevation: 5,
       margin: EdgeInsets.all(20),
-      child: Row(
-        children: groupTransactionsValues
-            .map(
-              (data) => Bar(
-                  data['day'],
-                  data['amount'],
-                  maxSpending == 0.0 ? 0.0: (data['amount'] as double) / maxSpending),
-      ).toList(),
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: groupTransactionsValues
+              .map(
+                (data) => Flexible(
+                  fit: FlexFit.tight,
+                  child: Bar(
+                      data['day'],
+                      data['amount'],
+                      maxSpending == 0.0 ? 0.0: (data['amount'] as double) / maxSpending),
+                ),
+        ).toList(),
+        ),
       ),
     );
   }
