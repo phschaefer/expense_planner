@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
+          button: TextStyle(color: Colors.white),
             ),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
@@ -47,7 +48,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
+  final List<Transaction> transactions = [
     Transaction(
       id: 't1',
       title: 'New Shoes',
@@ -63,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   List<Transaction> get _recentTransactions {
-    return _transactions.where(
+    return transactions.where(
       (element) => element.date.isAfter(
         DateTime.now().subtract(
           Duration(days: 7),
@@ -72,16 +73,22 @@ class _MyHomePageState extends State<MyHomePage> {
     ).toList();
   }
 
-  void addTransaction(String title, double amount) {
+  void addTransaction(String title, double amount, DateTime dateTime) {
     final newTransaction = Transaction(
       title: title,
       amount: amount,
-      date: DateTime.now(),
+      date: dateTime,
       id: DateTime.now().toString(),
     );
 
     setState(() {
-      _transactions.add(newTransaction);
+      transactions.add(newTransaction);
+    });
+  }
+
+  void deleteTransaction(String id) {
+    setState(() {
+      transactions.removeWhere((element) => element.id == id);
     });
   }
 
@@ -114,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Chart(_recentTransactions),
-            TransactionList(_transactions),
+            TransactionList(transactions, deleteTransaction),
           ],
         ),
       ),
