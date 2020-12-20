@@ -1,7 +1,9 @@
+import 'dart:io';
+
 import 'package:expense_planner/widgets/chart.dart';
 import 'package:expense_planner/widgets/new_transaction.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'models/transaction.dart';
 import 'widgets/transaction_list.dart';
@@ -111,9 +113,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final _title = Text('Expense Planner');
     final isLandscapeMode = MediaQuery.of(context).orientation == Orientation.landscape;
-    final appBar = AppBar(
-      title: Text('Expense Planner'),
+    final PreferredSizeWidget appBar = Platform.isIOS
+        ? CupertinoNavigationBar(
+      middle: _title,
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          GestureDetector(
+            child: Icon(CupertinoIcons.add),
+            onTap: () => startAddTransactions(context),
+          ),
+        ],
+      ),
+    )
+        : AppBar(
+      title: _title,
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.add),
@@ -130,9 +146,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: TransactionList(transactions, deleteTransaction)
     );
 
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
+    final bodyPage = SafeArea(
+      child: SingleChildScrollView(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -140,15 +155,18 @@ class _MyHomePageState extends State<MyHomePage> {
             if (isLandscapeMode) Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-              Text('Show Chart'),
-              Switch(value: showChart, onChanged: (value) {
-                setState(() {
-                  showChart = value;
-                });
-              },
-              ),
-            ],
-        ),
+                Text('Show Chart', style: Theme.of(context).textTheme.headline6,),
+                Switch.adaptive(
+                  activeColor: Theme.of(context).accentColor,
+                  value: showChart,
+                  onChanged: (value) {
+                    setState(() {
+                      showChart = value;
+                    });
+                  },
+                ),
+              ],
+            ),
             if (!isLandscapeMode)
               Container(
                 height: (MediaQuery.of(context).size.height -
@@ -170,7 +188,14 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+    );
+
+    return Platform.isIOS ? CupertinoPageScaffold( child: bodyPage, navigationBar: appBar,) :Scaffold(
+      appBar: appBar,
+      body: bodyPage,
+      floatingActionButton: Platform.isIOS
+          ? Container()
+          : FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () => startAddTransactions(context),
       ),
