@@ -10,9 +10,8 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 300,
-      child: transactions.isEmpty ? Column(
+    return transactions.isEmpty ? LayoutBuilder(builder: (context, constraints) {
+      return Column(
         children: <Widget>[
           Text(
             'No Transactions',
@@ -22,14 +21,15 @@ class TransactionList extends StatelessWidget {
             height: 10,
           ),
           Container(
-            height: 200,
+            height: constraints.maxHeight * 0.6,
             child: Image.asset(
               'assets/images/waiting.png',
               fit: BoxFit.cover,
             ),
           ),
         ],
-      ) :ListView.builder(
+      );
+    }) :ListView.builder(
         itemBuilder: (value, index) => Card(
           elevation: 5,
           margin: EdgeInsets.symmetric(
@@ -54,7 +54,6 @@ class TransactionList extends StatelessWidget {
                 ),
         ),
               itemCount: transactions.length,
-            ),
     );
   }
 }
